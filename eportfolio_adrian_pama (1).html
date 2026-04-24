@@ -1,0 +1,552 @@
+pama · HTML
+Copy
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adrian Pama | OOP E-Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+ 
+:root {
+  --bg:         #f7f8fc;
+  --bg-card:    #ffffff;
+  --bg-subtle:  #f0f2f8;
+  --border:     #e2e5ef;
+  --border-md:  #cdd1e3;
+  --blue:       #2563eb;
+  --blue-lt:    #eff4ff;
+  --blue-mid:   #bfcffd;
+  --teal:       #0d9488;
+  --teal-lt:    #f0fdf9;
+  --amber:      #d97706;
+  --amber-lt:   #fffbeb;
+  --text:       #1a1d2e;
+  --text-2:     #4b5275;
+  --text-3:     #8b92af;
+  --r:          10px;
+  --rl:         14px;
+  --fh:         'Manrope', sans-serif;
+  --fb:         'Inter', sans-serif;
+  --nav:        60px;
+  --mw:         780px;
+}
+ 
+body { background:var(--bg); color:var(--text); font-family:var(--fb); font-size:15px; line-height:1.75; }
+ 
+/* ── NAV ── */
+nav {
+  position:fixed; top:0; left:0; right:0; height:var(--nav);
+  background:rgba(247,248,252,0.96); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border); z-index:200;
+  display:flex; align-items:center; justify-content:space-between; padding:0 2rem;
+}
+.nav-brand { font-family:var(--fh); font-weight:800; font-size:1rem; color:var(--blue); }
+.nav-brand span { color:var(--text-2); font-weight:500; font-size:0.82rem; margin-left:7px; }
+.nav-links { display:flex; gap:0.2rem; list-style:none; }
+.nav-links button {
+  background:none; border:none; padding:6px 13px; border-radius:6px;
+  font-family:var(--fb); font-size:0.87rem; font-weight:500; color:var(--text-2);
+  cursor:pointer; transition:background 0.15s, color 0.15s;
+}
+.nav-links button:hover { background:var(--bg-subtle); color:var(--text); }
+.nav-links button.active { background:var(--blue-lt); color:var(--blue); font-weight:600; }
+.menu-btn { display:none; flex-direction:column; gap:4px; background:none; border:none; cursor:pointer; padding:4px; }
+.menu-btn span { display:block; width:22px; height:2px; background:var(--text-2); border-radius:2px; }
+ 
+/* ── PAGE SYSTEM ── */
+.page { display:none; }
+.page.active { display:block; }
+ 
+/* ── CONSISTENT WRAPPER — every page uses this ── */
+.wrap {
+  max-width:var(--mw); margin:0 auto;
+  padding:calc(var(--nav) + 2.75rem) 1.75rem 4rem;
+}
+ 
+/* ── CONSISTENT PAGE HEADER — every page uses this ── */
+.ph { margin-bottom:2.25rem; padding-bottom:1.5rem; border-bottom:1px solid var(--border); }
+.ph-over {
+  font-size:0.7rem; font-weight:600; letter-spacing:0.14em;
+  text-transform:uppercase; color:var(--blue); margin-bottom:0.4rem;
+}
+.ph-title {
+  font-family:var(--fh); font-size:clamp(1.65rem,3.5vw,2.2rem);
+  font-weight:800; color:var(--text); line-height:1.15; margin-bottom:0.45rem;
+}
+.ph-sub { font-size:0.91rem; color:var(--text-2); max-width:580px; }
+ 
+/* ── SECTION GROUP ── */
+.sg { margin-bottom:2.5rem; }
+.sg-head { display:flex; align-items:center; gap:9px; margin-bottom:1rem; }
+.sg-title { font-family:var(--fh); font-size:1.03rem; font-weight:700; color:var(--text); }
+ 
+/* ── BADGES ── */
+.badge {
+  display:inline-block; font-size:0.69rem; font-weight:600;
+  letter-spacing:0.07em; text-transform:uppercase;
+  padding:3px 9px; border-radius:99px; border:1px solid transparent;
+}
+.b-blue  { background:var(--blue-lt);  color:var(--blue);  border-color:var(--blue-mid); }
+.b-teal  { background:var(--teal-lt);  color:var(--teal);  border-color:#99d6cf; }
+.b-amber { background:var(--amber-lt); color:var(--amber); border-color:#fcd8a0; }
+.b-gray  { background:var(--bg-subtle);color:var(--text-2);border-color:var(--border); }
+ 
+/* ── CARD ── */
+.card {
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--rl); padding:1.5rem 1.75rem; margin-bottom:1rem;
+}
+ 
+/* ── ACCORDION ── */
+.acc { margin-bottom:0.55rem; }
+.acc-head {
+  width:100%; background:var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--r); padding:0.9rem 1.25rem;
+  display:flex; align-items:center; justify-content:space-between;
+  cursor:pointer; font-family:var(--fb); font-size:0.91rem; font-weight:600;
+  color:var(--text); text-align:left; transition:border-color 0.15s, background 0.15s;
+}
+.acc-head:hover { border-color:var(--blue-mid); background:var(--blue-lt); }
+.acc-head.open  { border-radius:var(--r) var(--r) 0 0; border-color:var(--blue-mid); background:var(--blue-lt); color:var(--blue); }
+.chev { font-size:0.72rem; color:var(--text-3); transition:transform 0.25s; flex-shrink:0; }
+.acc-head.open .chev { transform:rotate(180deg); color:var(--blue); }
+.acc-body {
+  display:none; background:var(--bg-card);
+  border:1px solid var(--blue-mid); border-top:none;
+  border-radius:0 0 var(--r) var(--r); padding:1.5rem 1.75rem;
+}
+.acc-body.open { display:block; }
+ 
+/* ── CONCEPT BOX ── */
+.concept {
+  background:var(--bg-subtle); border-radius:var(--r);
+  border-left:3px solid var(--blue); padding:1rem 1.2rem; margin-bottom:1rem;
+}
+.concept-lbl {
+  font-size:0.68rem; font-weight:600; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--blue); margin-bottom:0.3rem;
+}
+.concept p { font-size:0.89rem; color:var(--text-2); line-height:1.65; }
+ 
+/* ── REFLECTION BOX ── */
+.reflect {
+  background:var(--teal-lt); border-radius:var(--r);
+  border-left:3px solid var(--teal); padding:1.1rem 1.2rem; margin-top:0.75rem;
+}
+.reflect-lbl {
+  font-size:0.68rem; font-weight:600; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--teal); margin-bottom:0.3rem;
+}
+.reflect p { font-size:0.89rem; color:#134e4a; line-height:1.7; }
+ 
+/* ── SCREENSHOT SLOT ── */
+.ss {
+  background:var(--bg-subtle); border:1.5px dashed var(--border-md);
+  border-radius:var(--r); padding:2rem 1.5rem; text-align:center; margin:1rem 0;
+}
+.ss-ico { font-size:1.5rem; display:block; margin-bottom:0.35rem; }
+.ss p { font-size:0.82rem; color:var(--text-3); }
+.ss .ss-main { font-size:0.87rem; font-weight:500; color:var(--text-2); margin-bottom:0.15rem; }
+ 
+/* ── FILL SLOT ── */
+.fill {
+  display:block; background:#fffbeb; border:1px dashed #fbbf24;
+  border-radius:var(--r); padding:0.8rem 1.1rem; margin:0.55rem 0;
+  font-size:0.84rem; color:#92400e;
+}
+.fill strong {
+  font-weight:600; display:block; margin-bottom:2px;
+  font-size:0.69rem; text-transform:uppercase; letter-spacing:0.08em;
+}
+ 
+/* ── INFO GRID ── */
+.info-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.7rem; margin-bottom:0.7rem; }
+@media(max-width:500px){ .info-grid{ grid-template-columns:1fr; } }
+.ic { background:var(--bg-subtle); border-radius:var(--r); padding:0.9rem 1.1rem; }
+.ic-lbl { font-size:0.69rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-3); margin-bottom:0.25rem; }
+.ic-val { font-size:0.93rem; font-weight:500; color:var(--text); }
+ 
+/* ── HOME HERO ── */
+.hero { max-width:var(--mw); margin:0 auto; padding:calc(var(--nav) + 3rem) 1.75rem 1.5rem; }
+.hero-tag {
+  display:inline-flex; align-items:center; gap:6px;
+  background:var(--blue-lt); border:1px solid var(--blue-mid); color:var(--blue);
+  font-size:0.76rem; font-weight:600; letter-spacing:0.07em; text-transform:uppercase;
+  padding:5px 12px; border-radius:99px; margin-bottom:1.2rem;
+}
+.hero-name {
+  font-family:var(--fh); font-size:clamp(2.4rem,5vw,3.5rem);
+  font-weight:800; color:var(--text); line-height:1.1; margin-bottom:0.55rem;
+}
+.hero-name em { color:var(--blue); font-style:normal; }
+.hero-school { font-size:0.93rem; color:var(--text-2); margin-bottom:2rem; }
+.hero-intro {
+  background:var(--bg-card); border:1px solid var(--border);
+  border-left:3px solid var(--blue); border-radius:0 var(--rl) var(--rl) 0;
+  padding:1.4rem 1.7rem; max-width:620px; margin-bottom:2.25rem;
+}
+.hero-intro h3 { font-family:var(--fh); font-size:0.88rem; font-weight:700; color:var(--text); margin-bottom:0.4rem; }
+.hero-intro p  { font-size:0.91rem; color:var(--text-2); }
+.stats { display:grid; grid-template-columns:repeat(3,1fr); gap:0.7rem; max-width:440px; margin-bottom:1.75rem; }
+@media(max-width:420px){ .stats{ grid-template-columns:1fr 1fr; } }
+.stat { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r); padding:0.9rem; text-align:center; }
+.stat-n { font-family:var(--fh); font-size:1.55rem; font-weight:800; color:var(--blue); line-height:1; margin-bottom:0.25rem; }
+.stat-l { font-size:0.73rem; color:var(--text-3); font-weight:500; }
+.btns   { display:flex; gap:0.6rem; flex-wrap:wrap; }
+.btn-p  { background:var(--blue); color:#fff; border:none; padding:10px 22px; border-radius:8px; font-family:var(--fb); font-size:0.87rem; font-weight:600; cursor:pointer; }
+.btn-p:hover { background:#1d4ed8; }
+.btn-g  { background:var(--bg-card); color:var(--text-2); border:1px solid var(--border); padding:10px 22px; border-radius:8px; font-family:var(--fb); font-size:0.87rem; font-weight:500; cursor:pointer; }
+.btn-g:hover { border-color:var(--border-md); }
+ 
+/* ── CONCEPT GRID (home) ── */
+.cg { display:grid; grid-template-columns:1fr 1fr; gap:0.7rem; margin-top:0.75rem; }
+@media(max-width:500px){ .cg{ grid-template-columns:1fr; } }
+.cgi { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r); padding:0.95rem 1.1rem; }
+.cgi h4 { font-family:var(--fh); font-size:0.87rem; font-weight:700; color:var(--text); margin-bottom:0.25rem; }
+.cgi p  { font-size:0.82rem; color:var(--text-2); line-height:1.6; }
+ 
+/* ── SEPARATOR ── */
+.sep { border:none; border-top:1px solid var(--border); margin:2.25rem 0; }
+ 
+/* ── FOOTER ── */
+footer {
+  text-align:center; padding:1.5rem 1.75rem; border-top:1px solid var(--border);
+  font-size:0.79rem; color:var(--text-3); max-width:var(--mw); margin:0 auto;
+}
+ 
+/* ── MOBILE ── */
+@media(max-width:600px){
+  .nav-links{ display:none; flex-direction:column; position:absolute; top:var(--nav); left:0; right:0; background:var(--bg); border-bottom:1px solid var(--border); padding:0.6rem 1rem; gap:0.2rem; }
+  .nav-links.open{ display:flex; }
+  .menu-btn{ display:flex; }
+  .nav-brand span{ display:none; }
+}
+</style>
+</head>
+<body>
+ 
+<!-- ══ NAV ══ -->
+<nav>
+  <div class="nav-brand">Adrian Pama <span>OOP E-Portfolio</span></div>
+  <button class="menu-btn" id="mBtn" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><button onclick="go('home')"    id="nb-home">Home</button></li>
+    <li><button onclick="go('midterm')" id="nb-midterm">Midterm</button></li>
+    <li><button onclick="go('final')"   id="nb-final">Final</button></li>
+    <li><button onclick="go('contact')" id="nb-contact">Contact</button></li>
+  </ul>
+</nav>
+ 
+ 
+<!-- ══════════════ HOME ══════════════ -->
+<div class="page active" id="page-home">
+ 
+  <div class="hero">
+    <div class="hero-tag">E-Portfolio · AY 2025–2026</div>
+    <h1 class="hero-name">Adrian <em>Pama</em></h1>
+    <p class="hero-school">Polytechnic University of the Philippines &nbsp;·&nbsp; Section 1N &nbsp;·&nbsp; Object-Oriented Programming</p>
+ 
+    <div class="hero-intro">
+      <h3>About This Portfolio</h3>
+      <p>This e-portfolio documents my Midterm output in Object-Oriented Programming. It covers quizzes, seatwork, hands-on Java activities, and the midterm exam — with explanations and reflections that go beyond the output and focus on understanding.</p>
+    </div>
+ 
+    <div class="stats">
+      <div class="stat"><div class="stat-n">5</div><div class="stat-l">Activities</div></div>
+      <div class="stat"><div class="stat-n">1</div><div class="stat-l">Seatworks</div></div>
+      <div class="stat"><div class="stat-n">1</div><div class="stat-l">Exam</div></div>
+    </div>
+ 
+    <div class="btns">
+      <button class="btn-p" onclick="go('midterm')">View Midterm →</button>
+      <button class="btn-g" onclick="go('contact')">Contact Info</button>
+    </div>
+  </div>
+ 
+  <div class="wrap" style="padding-top:1.5rem;">
+    <div class="sg">
+      <div class="sg-head"><span class="sg-title">Topics Covered This Midterm</span></div>
+      <div class="cg">
+        <div class="cgi"><h4>Variables &amp; Data Types</h4><p>Declaring and using variables — how the correct data type ensures a program stores and processes information properly.</p></div>
+        <div class="cgi"><h4>Operators</h4><p>Arithmetic, relational, and logical operators — and why operator precedence matters in writing correct expressions.</p></div>
+        <div class="cgi"><h4>Decision Structures</h4><p>Using if-else and switch to make programs respond differently based on conditions.</p></div>
+        <div class="cgi"><h4>Methods</h4><p>Breaking programs into small, focused, reusable functions that each do one thing clearly.</p></div>
+        <div class="cgi"><h4>Loops &amp; Counters</h4><p>Repeating operations efficiently and tracking events like transactions or validation attempts.</p></div>
+        <div class="cgi"><h4>OOP Thinking</h4><p>Viewing programs as systems — modeling real-world processes like payments, banking, and expense tracking.</p></div>
+      </div>
+    </div>
+  </div>
+ 
+  <footer>© 2025–2026 Adrian Pama · OOP E-Portfolio · Polytechnic University of the Philippines</footer>
+</div>
+ 
+ 
+<!-- ══════════════ MIDTERM ══════════════ -->
+<div class="page" id="page-midterm">
+<div class="wrap">
+ 
+  <div class="ph">
+    <p class="ph-over">Midterm Coverage</p>
+    <h1 class="ph-title">Midterm Output</h1>
+    <p class="ph-sub">Quizzes, seatwork, Java activities, and the midterm exam — each with explanations and reflections focused on understanding.</p>
+  </div>
+ 
+  <!-- 1. QUIZZES -->
+  <div class="sg">
+    <div class="sg-head">
+      <span class="sg-title">Midterm Quizzes</span>
+      <span class="badge b-blue">Reflection</span>
+    </div>
+    <div class="card">
+      <div class="reflect">
+        <div class="reflect-lbl">Reflection</div>
+        <p>Taking the midterm quizzes pushed me to go beyond memorizing definitions — I had to think about how concepts actually behave inside a running program. Some questions felt straightforward until I slowed down and reconsidered them, which showed me that surface-level familiarity is not the same as real understanding. The quizzes identified the specific gaps I needed to fill — especially around operator precedence and how control flow behaves under different conditions. More than a test, they gave me an honest picture of what I truly understood versus what I had only seen before.</p>
+      </div>
+    </div>
+  </div>
+ 
+  <hr class="sep">
+ 
+  <!-- 2. SEATWORK -->
+  <div class="sg">
+    <div class="sg-head">
+      <span class="sg-title">Midterm Seatwork</span>
+      <span class="badge b-teal">1 Topic</span>
+    </div>
+ 
+    <div class="acc">
+      <button class="acc-head" onclick="tog(this)">
+        <span>Seatwork 1 — Operators</span><span class="chev">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="concept">
+          <div class="concept-lbl">What are Operators?</div>
+          <p>Operators are symbols that instruct Java to perform a specific action on values. <strong>Arithmetic operators</strong> (+, -, *, /, %) handle math. <strong>Relational operators</strong> (==, !=, &gt;, &lt;, &gt;=, &lt;=) compare values and return true or false. <strong>Logical operators</strong> (&amp;&amp;, ||, !) combine conditions. Operator <strong>precedence</strong> — the order Java evaluates parts of an expression — determines whether the result is correct.</p>
+        </div>
+        <div class="reflect">
+          <div class="reflect-lbl">Reflection</div>
+          <p>Operators looked simple until the seatwork revealed the details that matter — integer division silently drops decimals, short-circuit evaluation can skip entire conditions, and a single missing parenthesis can change a result entirely. This topic made me more deliberate when writing any expression in Java, because the difference between "looks right" and "is correct" often comes down to one small decision.</p>
+        </div>
+      </div>
+    </div>
+ 
+  </div>
+ 
+  <hr class="sep">
+ 
+  <!-- 3. ACTIVITIES -->
+  <div class="sg">
+    <div class="sg-head">
+      <span class="sg-title">Midterm Activities</span>
+      <span class="badge b-amber">5 Java Programs</span>
+    </div>
+ 
+    <!-- ACT 1 -->
+    <div class="acc">
+      <button class="acc-head" onclick="tog(this)">
+        <span>Activity 1 — Variables</span><span class="chev">▼</span>
+      </button>
+      <div class="acc-body">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem;">
+          <span class="badge b-blue">Java</span><span class="badge b-gray">Variables &amp; Data Types</span>
+        </div>
+        <div class="concept">
+          <div class="concept-lbl">Concept</div>
+          <p>A <strong>variable</strong> is a named storage location in memory that holds a value during a program's execution. In Java, every variable must be given a <strong>data type</strong> — <code>int</code> for whole numbers, <code>double</code> for decimals, <code>String</code> for text, <code>boolean</code> for true/false values, and so on. The type tells Java how much memory to reserve and what operations are valid on that variable.</p>
+        </div>
+        <img src="Screenshot 2026-04-25 060613.png" alt="Activity 1 - Variables" style="width:100%;border-radius:8px;border:1px solid #e2e5ef;margin:1rem 0;display:block;">
+        <span class="fill"><strong>Explanation</strong>This activity focused on analyzing a Java program involving variables, particularly how values are stored and changed in memory. It required tracing the program step-by-step, identifying how variables are assigned, updated, and referenced throughout execution. The task also involved completing tables and explaining the changes logically, helping visualize how data flows within the program.</span>
+        <span class="fill"><strong>What I Learned</strong>From this activity, I learned how variables behave in Java and how their values change during execution. It improved my understanding of memory tracing, assignment, and variable references. I also developed better analytical skills by carefully following each step of the program, which helped me become more accurate in understanding how code works behind the scenes.</span>
+      </div>
+    </div>
+ 
+    <!-- ACT 2 -->
+    <div class="acc">
+      <button class="acc-head" onclick="tog(this)">
+        <span>Activity 2 — Operators</span><span class="chev">▼</span>
+      </button>
+      <div class="acc-body">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem;">
+          <span class="badge b-blue">Java</span><span class="badge b-gray">Arithmetic &amp; Logic</span>
+        </div>
+        <div class="concept">
+          <div class="concept-lbl">Concept</div>
+          <p>This activity applied Java operators inside a program. Beyond knowing the symbols, the key challenge is understanding <strong>operator precedence</strong> — the rules that decide which operation runs first in an expression — and <strong>type compatibility</strong>, meaning how Java handles operations between different data types and when explicit casting is needed.</p>
+        </div>
+        <img src="Screenshot 2026-04-25 055708.png" alt="Activity 2 - Operators" style="width:100%;border-radius:8px;border:1px solid #e2e5ef;margin:1rem 0;display:block;">
+        <span class="fill"><strong>Explanation</strong>This activity focused on applying different types of Java operators to produce specific outputs. In Part I, I used bitwise, ternary, and assignment operators to generate the required values without hardcoding, ensuring that all results were computed through proper expressions. In Part II, I created a program that used a variety of operators such as arithmetic, relational, logical, unary, and bitwise, while following strict rules like producing exactly six outputs and including tricky increment/decrement cases. I also made sure not to reuse variables or logic from Part I and followed proper syntax and formatting.</span>
+        <span class="fill"><strong>What I Learned</strong>From this activity, I learned how to use different Java operators correctly and how they behave in various situations. I gained a deeper understanding of operator precedence, especially with tricky expressions like increments and decrements in a single statement. It also improved my ability to write clean and organized code while following specific instructions. Overall, the task strengthened my logical thinking and helped me become more careful and precise when working with expressions and outputs in Java.</span>
+      </div>
+    </div>
+ 
+    <!-- ACT 3 -->
+    <div class="acc">
+      <button class="acc-head" onclick="tog(this)">
+        <span>Activity 3 — ATM with Transaction Counter</span><span class="chev">▼</span>
+      </button>
+      <div class="acc-body">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem;">
+          <span class="badge b-blue">Java</span><span class="badge b-gray">Decision Structures</span><span class="badge b-gray">Methods</span><span class="badge b-gray">Counters</span>
+        </div>
+        <div class="concept">
+          <div class="concept-lbl">Concept</div>
+          <p>An ATM program models real banking logic: checking balances, processing deposits and withdrawals, and rejecting invalid operations. A <strong>transaction counter</strong> tracks how many operations the user has performed. This required <strong>if-else decision structures</strong> to handle different scenarios, and organizing functionality into separate, focused <strong>methods</strong> so the code stays readable and manageable.</p>
+        </div>
+        <img src="Screenshot 2026-04-25 054833.png" alt="Activity 3 - ATM with Transaction Counter" style="width:100%;border-radius:8px;border:1px solid #e2e5ef;margin:1rem 0;display:block;">
+        <span class="fill"><strong>Explanation</strong>This activity required creating a Secure ATM System in Java that begins with PIN authentication. The user must enter the correct PIN within three attempts or the account will be locked. Once access is granted, a menu is displayed with options such as checking balance, depositing, withdrawing, and exiting. The program uses a switch statement to process user choices, loops like while and do-while for repeated execution, and nested if statements to validate conditions such as limiting withdrawals to a maximum of 2,000 pesos per transaction.</span>
+        <span class="fill"><strong>What I Learned</strong>I learned how to implement security features like PIN validation with limited attempts, as well as how to use loops and conditionals together in a menu-driven program. It improved my understanding of switch statements, input validation, and controlling program flow. I also gained experience in handling real-life scenarios like ATM transactions, which strengthened my logical thinking and coding skills.</span>
+      </div>
+    </div>
+ 
+    <!-- ACT 4 -->
+    <div class="acc">
+      <button class="acc-head" onclick="tog(this)">
+        <span>Activity 4 — Student Payment System with Validation Counter</span><span class="chev">▼</span>
+      </button>
+      <div class="acc-body">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem;">
+          <span class="badge b-blue">Java</span><span class="badge b-gray">Input Validation</span><span class="badge b-gray">Loops</span><span class="badge b-gray">Counters</span>
+        </div>
+        <div class="concept">
+          <div class="concept-lbl">Concept</div>
+          <p>A Student Payment System processes tuition payments and verifies whether they meet the required amount. <strong>Input validation</strong> catches incomplete or incorrect entries before they are processed. A <strong>validation counter</strong> records how many attempts were made — valid or not — which makes the program informative and more robust against bad input.</p>
+        </div>
+        <img src="Screenshot 2026-04-25 053503.png" alt="Activity 4 - Student Payment System" style="width:100%;border-radius:8px;border:1px solid #e2e5ef;margin:1rem 0;display:block;">
+        <span class="fill"><strong>Explanation</strong>This activity involved creating a Java-based Student Payment System that handles tuition transactions through a menu-driven program. It used a switch statement for menu options, a do-while loop for repetition, and nested if statements for validation like preventing overpayment and multiple discounts. It also tracked transactions and ensured accurate balance updates.</span>
+        <span class="fill"><strong>What I Learned</strong>I learned how to combine loops, conditionals, and user input to build a functional program. It improved my understanding of validation, menu-driven systems, and handling real-life scenarios like payments and discounts, while also strengthening my coding structure and logic.</span>
+      </div>
+    </div>
+ 
+    <!-- ACT 5 -->
+    <div class="acc">
+      <button class="acc-head" onclick="tog(this)">
+        <span>Activity 5 — Personal Expense Tracker</span><span class="chev">▼</span>
+      </button>
+      <div class="acc-body">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem;">
+          <span class="badge b-blue">Java</span><span class="badge b-gray">Arrays</span><span class="badge b-gray">Loops</span><span class="badge b-gray">Methods</span>
+        </div>
+        <div class="concept">
+          <div class="concept-lbl">Concept</div>
+          <p>A Personal Expense Tracker allows users to log, view, and summarize their expenses. It brings several concepts together: <strong>arrays</strong> to store multiple entries, <strong>loops</strong> to process them all, and <strong>methods</strong> to keep the code organized. This program is a clear example of OOP thinking — separating each responsibility into a distinct, focused part so the overall system is clean and easy to follow.</p>
+        </div>
+       <img src="Screenshot 2026-04-25 052458.png" alt="Activity 5 - Personal Expense Tracker" style="width:100%;border-radius:8px;border:1px solid #e2e5ef;margin:1rem 0;display:block;">
+        <span class="fill"><strong>Explanation</strong>This activity involved creating a Java Student Payment System that simulates tuition transactions. The program collects student details and provides a menu to pay tuition, check balance, apply discounts, or exit. It uses a switch statement for menu options, a do-while loop for continuous execution, and nested if statements to validate conditions like overpayment and one-time discount use. A counter tracks transactions, and the system ensures accurate balance handling with proper messages.</span>
+        <span class="fill"><strong>What I Learned</strong>I learned how to integrate loops, conditionals, and user input into a working program. It improved my understanding of menu-driven systems, validation using nested if statements, and handling real-life scenarios like payments and discounts. I also gained better skills in organizing code and tracking data, which helped strengthen my problem-solving and programming abilities./span>
+      </div>
+    </div>
+  </div>
+ 
+  <hr class="sep">
+ 
+  <!-- 4. EXAM -->
+  <div class="sg">
+    <div class="sg-head">
+      <span class="sg-title">Midterm Exam</span>
+      <span class="badge b-blue">Reflection</span>
+    </div>
+    <div class="card">
+      <p style="font-size:0.78rem;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--text-3);margin-bottom:1rem;">Subject Reflection — Object-Oriented Programming</p>
+      <div class="reflect">
+        <div class="reflect-lbl">Reflection</div>
+        <p>The Midterm Exam served as a true measure of my understanding, not just what I memorized but how well I could apply concepts under pressure. It required me to analyze logic, solve problems, and write code that actually works. Through topics like Object-Oriented Programming (OOP), I learned to view programs as systems made up of objects with specific roles, making my code more organized and meaningful. Activities such as creating an ATM or Payment System helped me connect programming to real-world situations.</p>
+        <br>
+        <p>However, during the exam, I also felt a lot of pressure because of the limited time, and I experienced a mental block, especially during the coding part. This affected my performance and prevented me from doing as well as I expected. Even so, the exam showed me areas where I still need to improve, particularly in staying calm and thinking clearly under time constraints and pressure.</p>
+        <br>
+        <p>Overall, it gave me a clearer understanding of writing structured and effective programs, and it also made me more aware of how important it is to manage stress during exams. Despite the challenges, it motivated me to continue improving my skills and confidence moving forward.</p>
+      </div>
+    </div>
+  </div>
+ 
+</div>
+<footer>© 2025–2026 Adrian Pama · OOP E-Portfolio · Polytechnic University of the Philippines</footer>
+</div>
+ 
+ 
+<!-- ══════════════ FINAL ══════════════ -->
+<div class="page" id="page-final">
+<div class="wrap">
+ 
+  <div class="ph">
+    <p class="ph-over">Final Term</p>
+    <h1 class="ph-title">Final Term Output</h1>
+    <p class="ph-sub">Final term content will be added here as the semester progresses.</p>
+  </div>
+ 
+  <div class="card" style="text-align:center;padding:3rem 2rem;">
+    <div style="font-size:1.8rem;margin-bottom:0.9rem;">📋</div>
+    <div style="font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--text);margin-bottom:0.5rem;">Coming Soon</div>
+    <p style="color:var(--text-2);font-size:0.88rem;max-width:360px;margin:0 auto;line-height:1.65;">Final quizzes, seatwork, activities, and exam will be documented here with the same structure and level of detail as the Midterm section.</p>
+  </div>
+ 
+</div>
+<footer>© 2025–2026 Adrian Pama · OOP E-Portfolio · Polytechnic University of the Philippines</footer>
+</div>
+ 
+ 
+<!-- ══════════════ CONTACT ══════════════ -->
+<div class="page" id="page-contact">
+<div class="wrap">
+ 
+  <div class="ph">
+    <p class="ph-over">Contact</p>
+    <h1 class="ph-title">Student Information</h1>
+    <p class="ph-sub">Profile and contact details for this e-portfolio.</p>
+  </div>
+ 
+  <div class="sg">
+    <div class="info-grid">
+      <div class="ic"><div class="ic-lbl">Full Name</div><div class="ic-val">Adrian Pama</div></div>
+      <div class="ic"><div class="ic-lbl">Section</div><div class="ic-val">1N</div></div>
+    </div>
+    <div class="info-grid">
+      <div class="ic"><div class="ic-lbl">Course / Subject</div><div class="ic-val">Object-Oriented Programming</div></div>
+      <div class="ic"><div class="ic-lbl">Academic Year</div><div class="ic-val">2025 – 2026</div></div>
+    </div>
+    <div class="info-grid">
+      <div class="ic" style="grid-column:1/-1;"><div class="ic-lbl">School</div><div class="ic-val">Polytechnic University of the Philippines</div></div>
+    </div>
+ 
+    <div class="card" style="margin-top:0.4rem;">
+      <div style="font-size:0.69rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:0.5rem;">Email Address</div>
+      <span class="fill" style="margin:0;">adrianpama46@gmail.com</span>
+    </div>
+  </div>
+ 
+</div>
+<footer>© 2025–2026 Adrian Pama · OOP E-Portfolio · Polytechnic University of the Philippines</footer>
+</div>
+ 
+ 
+<script>
+  function go(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+    document.getElementById('nb-' + name).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('navLinks').classList.remove('open');
+  }
+ 
+  function tog(btn) {
+    const body = btn.nextElementSibling;
+    const isOpen = body.classList.contains('open');
+    btn.classList.toggle('open', !isOpen);
+    body.classList.toggle('open', !isOpen);
+  }
+ 
+  document.getElementById('mBtn').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+ 
+  document.getElementById('nb-home').classList.add('active');
+</script>
+</body>
+</html>
